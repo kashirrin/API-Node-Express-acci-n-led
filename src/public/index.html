@@ -9,6 +9,7 @@
 	<body>
 
 		<header>
+            <!--Botón que hara la función de llamar a la api que accionará el estado del led.-->
 			<button id="accion" onclick="javascript:accionled()">
 				
 			</button>
@@ -18,17 +19,25 @@
 		</header>
 
         <script>
+            // Variable utilizada para poder darle un parámetro al id de la url que dara acción al led.
             var aum = 1;
+            // Función que se realizará cada vez que se de click al botón.
             function accionled(){
+                // Se crea una constante de la clase XMLHttpRequest, la cual dara formato legible para el ser humano 
+                // a los datos de la api del estado del led.
                 const req = new XMLHttpRequest();
                 req.open('GET','./api/led/:id');
                 req.send();
+                // Una vez que se efectua la pulsación del led, este pasara al estado de cambio, osea detecto la pulsación.
                 req.onreadystatechange = function() {
                     if (this.readyState == 4 && this.status == 200) {
+                        // Se debe especifica en que lugar sera depasitada la información de la api, en este caso un
+                        // cuadro de texto con la id "areaestado".
                         document.getElementById("areaestado").innerHTML =
                         this.responseText;
                     }
                 };
+                // Condicional simple, para poder especificar el estado del led 1 = enecendido, 2 = apagado.
                 if (aum < 3){
                     req.open("GET", `./api/led/${aum}`, true);
                     req.send();
@@ -39,11 +48,13 @@
                     req.send();
                 }  
             }
-
+            // Función que mandará a llamar a la API de fecha hora, esta se efectuara cada 5 segundos
+            // gracias al método setInterval.
             function apiTiempo(){
                 const req = new XMLHttpRequest();
                 req.open('GET','./api/fechahora');
                 req.send();
+                // Básicamente lo mismo que en la función pasada.
                 req.onreadystatechange = function() {
                     if (this.readyState == 4 && this.status == 200) {
                         document.getElementById("areafecha").innerHTML =
