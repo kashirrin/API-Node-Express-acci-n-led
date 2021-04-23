@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+	<head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+		<title>Api remedial</title>
+        
+	</head>
+	<body>
+
+		<header>
+			<button id="accion" onclick="javascript:accionled()">
+				
+			</button>
+
+            <textarea id="areafecha"></textarea>
+            <textarea id="areaestado"></textarea>
+		</header>
+
+        <script>
+            var aum = 1;
+            function accionled(){
+                const req = new XMLHttpRequest();
+                req.open('GET','./api/led/:id');
+                req.send();
+                req.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        document.getElementById("areaestado").innerHTML =
+                        this.responseText;
+                    }
+                };
+                if (aum < 3){
+                    req.open("GET", `./api/led/${aum}`, true);
+                    req.send();
+                    aum++;
+                }else{
+                    aum = 1;
+                    req.open("GET", `./api/led/${aum}`, true);
+                    req.send();
+                }  
+            }
+
+            function apiTiempo(){
+                const req = new XMLHttpRequest();
+                req.open('GET','./api/fechahora');
+                req.send();
+                req.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        document.getElementById("areafecha").innerHTML =
+                        this.responseText;
+                    }
+                };
+                req.open("GET", './api/fechahora', true);
+                req.send();
+                
+            }
+            setInterval(apiTiempo, 5000);
+
+        </script>
+	</body>
+</html>

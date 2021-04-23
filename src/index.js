@@ -8,6 +8,8 @@ const now  =  new Date();
 const fecha = date.format(now,'DD/MM/YYYY HH:mm:ss');
 const app = express();
 
+app.use(express.static(__dirname + '/public'));
+
 // Se manejara el control de encendido de el led, por medio de la URL del sitio, en el cual si se ingresa el número 1
 // encendera el led, en caso contrario, ingresar cualquier otro número resultara en el led apagado.
 app.get('/api/led/:id', (req, res) => {
@@ -25,4 +27,4 @@ app.get('/api/fechahora', async (req, res) => {
 
 // ports
 const port = process.env.PORT || 3000;
-app.listen(port, () => console.log(`Listening in port ${port}`));
+app.listen(port, () => console.log(`Esta vivo en el puerto: ${port}`));
